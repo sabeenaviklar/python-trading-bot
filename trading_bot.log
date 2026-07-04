@@ -1,0 +1,2 @@
+2026-07-04 17:54:04,157 - binance_bot - INFO - Successfully connected to Binance Futures Testnet.
+2026-07-04 17:54:04,159 - binance_bot - INFO - [DRY RUN] Would place order: {'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quantity': 0.01}

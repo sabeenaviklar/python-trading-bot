@@ -2,7 +2,7 @@ from binance.exceptions import BinanceAPIException, BinanceRequestException
 from .client import BinanceTestnetClient
 from .logging_config import logger
 
-def place_order(client: BinanceTestnetClient, symbol: str, side: str, order_type: str, quantity: float, price: float = None, stop_price: float = None):
+def place_order(client: BinanceTestnetClient, symbol: str, side: str, order_type: str, quantity: float, price: float = None, stop_price: float = None, dry_run: bool = False):
     try:
         binance_client = client.get_client()
         if not binance_client:
@@ -20,6 +20,19 @@ def place_order(client: BinanceTestnetClient, symbol: str, side: str, order_type
             params['price'] = price
         elif order_type == 'STOP_MARKET':
             params['stopPrice'] = stop_price
+            
+        if dry_run:
+            logger.info(f"[DRY RUN] Would place order: {params}")
+            return {
+                'success': True,
+                'data': {
+                    'orderId': 'DRY-RUN-12345',
+                    'status': 'SIMULATED',
+                    'executedQty': '0.0',
+                    'avgPrice': '0.0',
+                    'note': 'This was a dry run. No actual API call was made.'
+                }
+            }
             
         logger.info(f"Placing order request: {params}")
         

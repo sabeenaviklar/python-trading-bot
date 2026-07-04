@@ -44,7 +44,8 @@ def load_credentials():
 @click.option('--quantity', prompt=True, type=float, help='Order quantity')
 @click.option('--price', type=float, default=None, help='Price for LIMIT orders')
 @click.option('--stop-price', type=float, default=None, help='Stop price for STOP_MARKET orders')
-def main(symbol, side, order_type, quantity, price, stop_price):
+@click.option('--dry-run', is_flag=True, help='Simulate order placement without calling the API')
+def main(symbol, side, order_type, quantity, price, stop_price, dry_run):
     """
     CLI application to place orders on Binance Futures Testnet.
     """
@@ -105,7 +106,7 @@ def main(symbol, side, order_type, quantity, price, stop_price):
         return
         
     with console.status(f"[bold green]Placing {order_type} order...") as status:
-        result = place_order(client, symbol, side, order_type, quantity, price, stop_price)
+        result = place_order(client, symbol, side, order_type, quantity, price, stop_price, dry_run=dry_run)
         
     if result['success']:
         data = result['data']
@@ -120,6 +121,8 @@ def main(symbol, side, order_type, quantity, price, stop_price):
         res_table.add_row("Executed Qty", str(data.get('executedQty')))
         if data.get('avgPrice') and float(data.get('avgPrice', 0)) > 0:
             res_table.add_row("Avg Price", str(data.get('avgPrice')))
+        if data.get('note'):
+            res_table.add_row("Note", f"[yellow]{data.get('note')}[/yellow]")
             
         console.print(res_table)
     else:
