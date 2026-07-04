@@ -1,16 +1,16 @@
 # Binance Futures Testnet Trading Bot
 
-A Python CLI application to place orders (Market, Limit, Stop Market) on the Binance Futures Testnet (USDT-M).
+This is a Python CLI application built to interact with the Binance Futures Testnet (USDT-M). It allows you to place various types of orders from the command line while keeping track of API interactions.
 
 ## Features
-- **Place Orders**: Supports Market, Limit, and Stop Market orders.
-- **Both Sides**: Supports BUY (Long) and SELL (Short).
-- **Interactive CLI**: Enhanced user experience with interactive prompts, colorful tables, and confirmations using `click` and `rich`.
-- **Structured Code**: Clean separation between API interactions and CLI logic.
-- **Robust Validation**: Pre-validates user input before making API calls.
-- **Detailed Logging**: Logs API requests, responses, and errors to `trading_bot.log`.
+- Places **Market, Limit, and Stop Market** orders on the testnet.
+- Supports both **BUY (Long)** and **SELL (Short)** directions.
+- I've added an interactive CLI built with `click` and `rich` to make inputs easier to read and validate before placing orders.
+- Code is split between the core API logic (`bot/`) and the command-line interface (`cli.py`).
+- Saves logs of all API interactions to `trading_bot.log`.
+- Includes a `--dry-run` flag so you can test the CLI without hitting the Binance API.
 
-## Setup Steps
+## How to Set It Up
 
 1. **Clone the repository or extract the folder.**
 
@@ -29,20 +29,17 @@ A Python CLI application to place orders (Market, Limit, Stop Market) on the Bin
    ```
 
 4. **API Credentials:**
-   You can run the script and it will prompt you for your API credentials and optionally save them to a `.env` file for future use. Alternatively, create a `.env` file in the root directory:
+   You can either let the script prompt you for your keys, or create a `.env` file in the root directory like this:
    ```env
    BINANCE_API_KEY=your_testnet_api_key
    BINANCE_API_SECRET=your_testnet_api_secret
    ```
 
-## How to Run Examples
+## Running the Bot
 
-Navigate to the `trading_bot` directory:
-```bash
-cd trading_bot
-```
+Note: If you are running this from the root directory, you can just execute `python trading_bot/cli.py`.
 
-### Interactive Mode (Prompts for inputs)
+### Interactive Mode
 ```bash
 python cli.py
 ```
@@ -57,7 +54,7 @@ python cli.py --symbol BTCUSDT --side BUY --order-type MARKET --quantity 0.01
 
 **2. Limit Order (Sell 0.01 BTC at 90,000 USDT):**
 ```bash
-python cli.py --symbol BTCUSDT --side SELL --order-type LIMIT --quantity 0.01 --price 90000
+python trading_bot/cli.py --symbol BTCUSDT --side SELL --order-type LIMIT --quantity 0.01 --price 90000
 ```
 
 **3. Stop Market Order (Sell 0.01 BTC when price drops to 50,000 USDT):**
@@ -66,8 +63,8 @@ python cli.py --symbol BTCUSDT --side SELL --order-type STOP_MARKET --quantity 0
 ```
 
 ## Logs
-All actions, API responses, and errors are saved into `trading_bot/trading_bot.log`.
+Check `trading_bot.log` in the root folder for a history of API responses and orders.
 
-## Assumptions
-- Designed explicitly for **Binance Futures Testnet (USDT-M)**. Spot trading or mainnet usage will require modifying `testnet=True` or switching endpoints.
-- Assumes valid quantity precision and price tick sizes as provided by Binance; standard API errors will be caught and logged if invalid amounts are submitted.
+## A Few Assumptions
+- The bot is hardcoded to connect to the Binance Futures Testnet. It won't work on the mainnet unless you change `testnet=True` in `client.py`.
+- It relies on standard Binance exceptions for catching things like invalid tick sizes or missing funds.
