@@ -62,6 +62,17 @@ python trading_bot/cli.py --symbol BTCUSDT --side SELL --order-type LIMIT --quan
 python cli.py --symbol BTCUSDT --side SELL --order-type STOP_MARKET --quantity 0.01 --stop-price 50000
 ```
 
+### Dry-Run Testing
+You can test the full validation flow without generating API keys or hitting the Binance endpoint, just append the `--dry-run` flag to any command.
+
+```bash
+python trading_bot/cli.py --symbol BTCUSDT --side BUY --order-type MARKET --quantity 0.01 --dry-run
+```
+
+This will run all the internal validations, generate the expected request payload, print the confirmation summary table, and instantly return a mocked successful response without routing any real network requests.
+
+![alt text](image.png)
+
 ## Logs
 Check `trading_bot.log` in the root folder for a history of API responses and orders.
 
